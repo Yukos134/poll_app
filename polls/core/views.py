@@ -44,8 +44,6 @@ class Polls(View):
 
 class Vote(View):
     def post(self, request, *args, **kwargs):
-        from pprint import pprint
-        pprint(request.user.__dict__)
         user_id = request.COOKIES.get('csrftoken')
         poll_id = request.POST.get('poll_id')
         opinion_id = request.POST.get('opinion_id')
@@ -54,7 +52,6 @@ class Vote(View):
         # user db=1
         r1 = redis_connection(db=1)
         if r1.get(redis_user_poll_key):
-            # user has already voted:
             return JsonResponse({'message': 'You have already voted'}, status=200)
 
         # poll db=0
